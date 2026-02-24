@@ -19,6 +19,10 @@
   --equals-hover: #c73652;
   --shadow: rgba(0, 0, 0, 0.5);
   --font: 'Segoe UI', sans-serif;
+  --wb-bg: #1e1e2e;
+  --wb-toolbar-bg: #16162a;
+  --wb-grid-color: rgba(255, 255, 255, 0.06);
+  --wb-border: rgba(255, 255, 255, 0.08);
 }
 
 [data-theme="light"] {
@@ -34,6 +38,10 @@
   --equals-bg: #f04e37;
   --equals-hover: #c93c28;
   --shadow: rgba(0, 0, 0, 0.15);
+  --wb-bg: #f0f0f5;
+  --wb-toolbar-bg: #e2e2ea;
+  --wb-grid-color: rgba(0, 0, 0, 0.06);
+  --wb-border: rgba(0, 0, 0, 0.1);
 }
 
 [data-theme="retro"] {
@@ -50,6 +58,10 @@
   --equals-hover: #27b30e;
   --shadow: rgba(57, 255, 20, 0.15);
   --font: 'Courier New', monospace;
+  --wb-bg: #0a0a0a;
+  --wb-toolbar-bg: #0d1200;
+  --wb-grid-color: rgba(57, 255, 20, 0.06);
+  --wb-border: rgba(57, 255, 20, 0.1);
 }
 
 [data-theme="ocean"] {
@@ -65,25 +77,50 @@
   --equals-bg: #00b4d8;
   --equals-hover: #0096c7;
   --shadow: rgba(0, 0, 0, 0.4);
+  --wb-bg: #023e8a;
+  --wb-toolbar-bg: #03045e;
+  --wb-grid-color: rgba(202, 240, 248, 0.06);
+  --wb-border: rgba(202, 240, 248, 0.1);
 }
 
-/* ── Layout ── */
+/* ── App Layout ── */
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   background: var(--body-bg);
   font-family: var(--font, 'Segoe UI', sans-serif);
   transition: background 0.3s;
 }
 
-/* ── Theme selector ── */
-.theme-selector {
-  margin-bottom: 16px;
+.app-header {
+  display: flex;
+  justify-content: center;
+  padding: 10px 16px;
+  flex-shrink: 0;
 }
 
+.app-container {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  gap: 0;
+}
+
+/* ── Calculator Panel ── */
+.calculator-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  flex-shrink: 0;
+}
+
+/* ── Theme selector ── */
 .theme-selector select {
   background: var(--calc-bg);
   color: var(--text-color);
@@ -191,3 +228,256 @@ body {
 .btn.span-two {
   grid-column: span 2;
 }
+
+/* ══════════════════════════════════════════════
+   WHITEBOARD STYLES
+   ══════════════════════════════════════════════ */
+
+.whiteboard-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border-left: 1px solid var(--wb-border);
+  position: relative;
+}
+
+/* ── Toolbar ── */
+.wb-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--wb-toolbar-bg);
+  border-bottom: 1px solid var(--wb-border);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  min-height: 44px;
+  transition: background 0.3s, border-color 0.3s;
+}
+
+.wb-tool-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.wb-separator {
+  width: 1px;
+  height: 24px;
+  background: var(--wb-border);
+  margin: 0 4px;
+}
+
+.wb-spacer {
+  flex: 1;
+}
+
+/* Tool buttons */
+.wb-tool-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--dim-text);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.wb-tool-btn:hover {
+  background: var(--btn-hover);
+  color: var(--text-color);
+}
+
+.wb-tool-btn.active {
+  background: var(--operator-color);
+  color: #ffffff;
+}
+
+/* Action buttons */
+.wb-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--dim-text);
+  cursor: pointer;
+  font-size: 16px;
+  font-family: inherit;
+  padding: 0 6px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.wb-action-btn:hover {
+  background: var(--btn-hover);
+  color: var(--text-color);
+}
+
+.wb-clear-btn:hover {
+  background: #e94560;
+  color: #fff;
+}
+
+/* Zoom group */
+.wb-zoom-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: 4px;
+}
+
+.wb-zoom-display {
+  color: var(--dim-text);
+  font-size: 12px;
+  min-width: 40px;
+  text-align: center;
+  user-select: none;
+}
+
+.wb-zoom-reset {
+  font-size: 11px;
+}
+
+/* ── Properties ── */
+.wb-props {
+  gap: 8px;
+}
+
+.wb-color-wrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.wb-color-label {
+  font-size: 11px;
+  color: var(--dim-text);
+  user-select: none;
+}
+
+.wb-color-wrap input[type="color"] {
+  width: 26px;
+  height: 26px;
+  border: 2px solid var(--wb-border);
+  border-radius: 6px;
+  background: none;
+  cursor: pointer;
+  padding: 1px;
+}
+
+.wb-color-wrap input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.wb-color-wrap input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 3px;
+}
+
+.wb-no-fill {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 11px;
+  color: var(--dim-text);
+  cursor: pointer;
+  user-select: none;
+  margin-left: -2px;
+}
+
+.wb-no-fill input[type="checkbox"] {
+  width: 12px;
+  height: 12px;
+  cursor: pointer;
+}
+
+/* Stroke width buttons */
+.wb-stroke-widths {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.wb-sw-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.wb-sw-btn:hover {
+  background: var(--btn-hover);
+}
+
+.wb-sw-btn.active {
+  background: var(--btn-active);
+}
+
+.wb-sw-btn span {
+  display: block;
+  width: 16px;
+  background: var(--text-color);
+  border-radius: 2px;
+}
+
+/* ── Canvas ── */
+.wb-canvas-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: var(--wb-bg);
+  transition: background 0.3s;
+}
+
+#wb-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Text Input Overlay ── */
+.wb-text-input {
+  position: absolute;
+  background: transparent;
+  border: 2px solid var(--operator-color);
+  border-radius: 4px;
+  color: var(--text-color);
+  font-family: var(--font, 'Segoe UI', sans-serif);
+  font-size: 18px;
+  padding: 4px 6px;
+  outline: none;
+  resize: none;
+  min-width: 100px;
+  min-height: 30px;
+  z-index: 10;
+  overflow: hidden;
+}
+
+/* ── Cursors ── */
+.wb-canvas-container.tool-select { cursor: default; }
+.wb-canvas-container.tool-pan { cursor: grab; }
+.wb-canvas-container.tool-pan:active { cursor: grabbing; }
+.wb-canvas-container.tool-pen { cursor: crosshair; }
+.wb-canvas-container.tool-rect { cursor: crosshair; }
+.wb-canvas-container.tool-ellipse { cursor: crosshair; }
+.wb-canvas-container.tool-diamond { cursor: crosshair; }
+.wb-canvas-container.tool-line { cursor: crosshair; }
+.wb-canvas-container.tool-arrow { cursor: crosshair; }
+.wb-canvas-container.tool-text { cursor: text; }
+.wb-canvas-container.tool-sticky { cursor: crosshair; }
+.wb-canvas-container.panning { cursor: grabbing !important; }
