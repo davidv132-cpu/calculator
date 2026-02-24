@@ -157,8 +157,12 @@ function setTheme(theme) {
   }
 })();
 
-// Keyboard support
+// Keyboard support (only when not interacting with whiteboard)
 document.addEventListener('keydown', (e) => {
+  // Skip if focus is on the whiteboard or its controls
+  if (e.target.closest && e.target.closest('.whiteboard-panel')) return;
+  if (e.target.id === 'wb-canvas' || e.target.id === 'wb-text-input') return;
+
   if (e.key >= '0' && e.key <= '9') appendChar(e.key);
   else if (e.key === '.') appendChar('.');
   else if (e.key === '+') appendChar('+');
