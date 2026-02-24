@@ -137,6 +137,26 @@ function formatNumber(num) {
   return rounded.toString();
 }
 
+// Theme switcher
+function setTheme(theme) {
+  if (theme === 'dark') {
+    document.body.removeAttribute('data-theme');
+  } else {
+    document.body.setAttribute('data-theme', theme);
+  }
+  localStorage.setItem('calcTheme', theme);
+}
+
+// Restore saved theme on load
+(function () {
+  const saved = localStorage.getItem('calcTheme');
+  if (saved) {
+    setTheme(saved);
+    const sel = document.getElementById('themeSelect');
+    if (sel) sel.value = saved;
+  }
+})();
+
 // Keyboard support
 document.addEventListener('keydown', (e) => {
   if (e.key >= '0' && e.key <= '9') appendChar(e.key);
